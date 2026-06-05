@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+        <meta name="referrer" content="no-referrer">
+        <!-- PWA -->
+        <link rel="manifest" href="manifest.json">
+        <link rel="apple-touch-icon" href="images/icon-180.png">
+        <meta name="theme-color" content="#212529">
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+        <meta name="apple-mobile-web-app-title" content="Bitweb">
+        <meta http-equiv="Content-Security-Policy" content="
+            default-src 'self';
+            script-src 'self';
+            style-src 'self';
+            connect-src 'self' https://api2.bitwebcore.net wss://api2.bitwebcore.net;
+            worker-src 'self';
+            img-src 'self' data: blob:;
+            media-src blob:;
+            font-src 'self';
+            frame-src 'none';
+            object-src 'none';
+            upgrade-insecure-requests;
+            base-uri 'self';
+            form-action 'self';
+        ">
+        <!-- https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css -->
+        <link rel="stylesheet" href="css/all.min.css"
+            integrity="sha384-rWj9FmWWt3OMqd9vBkWRhFavvVUYalYqGPoMdL1brs/qvvqz88gvLShYa4hKNyqb"
+            crossorigin="anonymous">
+        <!-- https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.8/css/bootstrap.min.css -->
+        <link rel="stylesheet" href="css/bootstrap.min.css"
+                integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
+                crossorigin="anonymous">
+        <!-- Custom styles -->
+        <link rel="stylesheet" href="css/styles.css"
+                integrity="sha512-zQiCkzVsS1L/sop4Z0/emFRR1C7Dow3Ju/QCeRnspd9XExhsvcOE8fSpA/LVXPfV+JndEelVWrUO8TIM5Hs5tQ=="
+                crossorigin="anonymous">
+        <!-- favicon -->
+        <link rel="icon" type="image/svg+xml" href="images/logo.svg">
+        <!-- Auto/Light/Dark theme controler -->
+        <script src="js/theme.js"
+                integrity="sha512-VIezPzgMRNwET/zKp4tz/1PvRslo0kfJoGGTTVu7k6wdI0Z4BiF3MyfzNllR7Zkyy71YQ8R4VYkydnk5gB+45g=="
+                crossorigin="anonymous"></script>
+        <!-- https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js -->
+        <script src="js/jquery.min.js"
+                integrity="sha384-1H217gwSVyLSIfaLxHbE7dRb3v4mYCKbpQvzx0cegeju1MVsGrX5xXxAvs/HgeFs"
+                crossorigin="anonymous"></script>
+        <!-- https://cdnjs.cloudflare.com/ajax/libs/js-sha256/0.11.1/sha256.min.js -->
+        <script src="js/sha256.min.js"
+                integrity="sha384-2hE+62EhDTI8GB1l6/KBZldM8qsy8CUJ/e5YlZaSbD6Bi4z0YhdrH2LCjDqYXAkg"
+                crossorigin="anonymous"></script>
+        <!-- https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js -->
+        <script src="js/bootstrap.bundle.min.js"
+                integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+                crossorigin="anonymous"></script>
+        <!-- Self build see https://github.com/bitweb-project/qrcode-browser-1.5.4 -->
+        <script src="js/qrcode-browser.min.js"
+                integrity="sha512-Fylkwjj7d5d/OCmgh3/usBPvSY5+Q/cYSl1myDVYCw1alMz4Sam6/IWwuXh8D3auWeq2L6vD8hT/p/CI8ppYPg=="
+                crossorigin="anonymous"></script>
+        <!-- https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js -->
+        <script src="js/jsQR.min.js"
+                integrity="sha512-KbmR1Et+8VJSKLeI7vJKCWY9q5ZrdU21KcHFG8OUSeI0NPQK+dkABkTs1WUYWVINZwgv8ePueskqbquPjrQNVw=="
+                crossorigin="anonymous"></script>
+        <!-- Translates -->
+        <script src="js/multilang.js"
+                integrity="sha512-tCTwcb1/YC6Q8U1AjLsuzUJCyJhF9z49cNZqjOzs5H9M2WCcE9pIiTkjJWCEdFR/KXVFr6qCT2Nf7b1YOn8bSg=="
+                crossorigin="anonymous"></script>
+        <!-- Self build see BUILD4_bip39.md -->
+        <script src="js/bip39-bundle.min.js"
+                integrity="sha512-lf8u51hdguRIFwjMOeQl4ux4IgedzdqTM3UjiXtgYnv8a4xiI1TpEZXAyN/RQLY7VsAQV+ycHQs+jvvAyRbScA=="
+                crossorigin="anonymous"></script>
+        <!-- Self build see https://github.com/bitweb-project/bitcoin-bundle-v7 -->
+        <script src="js/bitcoin-bundle-v7.min.js"
+                integrity="sha512-4a6IrbcPk7PuGATPEqbn+9k1Ne+t2qPtDm/WlySgCPTsgLGzXtsRxSHdstgNQRXp6PCO+pgHhGDaiNt3fDQ20Q=="
+                crossorigin="anonymous"></script>
+        <!-- https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.8.1/socket.io.min.js -->
+        <script src="js/socket.io.min.js"
+                integrity="sha512-8ExARjWWkIllMlNzVg7JKq9RKWPlJABQUNq6YvAjE/HobctjH/NA+bSiDMDvouBVjp4Wwnf1VP1OEv7Zgjtuxw=="
+                crossorigin="anonymous"></script>
+        <!-- Seed image export controler -->
+        <script src="js/seed-export.js"
+                integrity="sha512-WttrdpsTyGOzeWGHvyXvJ7YO1lZVsA0b2xFXeU49qonaikzEmILFRcPnWJdCDOFMiaq+1l6YYOZnPigCbSGE3Q=="
+                crossorigin="anonymous"></script>
+        <!-- Transaction history controler -->
+        <script src="js/tx-history.js"
+                integrity="sha512-vJN6ZwCVKiyt40YL13XWpOB/0WQtUdmZJK1OwvMW6VanxvVAVYfRSMuLKYlIy+KerIVkkwKAujn4LIA2iT80Vw=="
+                crossorigin="anonymous"></script>
+        <title>Wallet</title>
+        <meta name="description" content="Bitweb Web Wallet">
+    </head>
+    <body>
+        <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark">
+            <div class="container">
+                <a href="#" class="navbar-brand d-flex align-items-center">
+                        <img id="logo" src="images/logo.svg" alt="Bitweb">
+                        <span class="brand-text">Bitweb</span>
+                    </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarResponsive">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link router-link me-md-2" data-route="homepage" tkey="home"></a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#/broadcast" class="nav-link router-link me-md-2" data-route="broadcast" tkey="broadcast"></a>
+                        </li>
+                        <li class="nav-item dropdown ms-2">
+                            <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" id="lang-label">🌐</a>
+                            <ul class="dropdown-menu dropdown-menu-end" id="lang-dropdown-menu">
+                            </ul>
+                        </li>
+                        <li class="nav-item dropdown ms-2">
+                            <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" id="theme-label">🔄 AUTO</a>
+                            <ul class="dropdown-menu dropdown-menu-end" id="theme-dropdown-menu">
+                                <li><a class="dropdown-item theme-option" href="#" data-theme="light" tkey="theme-light"></a></li>
+                                <li><a class="dropdown-item theme-option" href="#" data-theme="dark" tkey="theme-dark"></a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item theme-option" href="#" data-theme="auto" tkey="theme-auto"></a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <div class="container">
+            <div id="error-message" class="alert alert-warning d-none" role="alert">
+                Error
+            </div>
+        </div>
+        <div id="homepage" class="router-page">
+            <div class="container">
+                <div id="pin-login-block" class="d-none">
+                    <div class="card mb-3 pin-login-card">
+                        <div class="card-body">
+                            <p class="pin-login-title"><span class="fa-solid fa-lock"></span> <span tkey="pin-login-title">Saved wallet found</span></p>
+                            <!-- PIN input removed: public key loads without PIN (priv key only loaded when signing) -->
+                            <div class="d-grid mb-2">
+                                <button id="pin-login-btn" class="btn btn-primary" tkey="pin-login-btn">Open</button>
+                            </div>
+                            <div class="text-center mt-2">
+                                <button id="pin-login-forget" class="btn btn-danger btn-sm" type="button" tkey="pin-login-forget">Forget saved wallet</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="open-block">
+                    <div class="card mb-3">
+                        <div class="card-header">
+                            <ul class="nav nav-tabs card-header-tabs">
+                                <li class="nav-item me-2">
+                                    <a class="nav-link tab-link active" data-tab-name="open-seed" data-tab-family="open-block" href="#" tkey="open-seed">🌱 Seed Phrase</a>
+                                </li>
+                                <li class="nav-item me-2">
+                                    <a class="nav-link tab-link" data-tab-name="open-regular" data-tab-family="open-block" href="#" tkey="open-regular"></a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link tab-link" data-tab-name="open-key" data-tab-family="open-block" href="#" tkey="open-key"></a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="card-body">
+                            <div class="tab-item" data-tab="open-seed" id="seed-tab-root">
+                                <div id="seed-entry">
+                                    <div class="d-grid gap-2">
+                                        <button class="btn btn-primary" id="seed-btn-create" type="button" tkey="seed-btn-create">✨ Create New Wallet</button>
+                                        <button class="btn btn-outline-secondary" id="seed-btn-restore" type="button" tkey="seed-btn-restore">🔑 Restore from Seed Phrase</button>
+                                    </div>
+                                </div>
+                                <div id="seed-create" class="d-none">
+                                    <div id="seed-create-step1">
+                                        <div class="d-flex align-items-center justify-content-between mb-2">
+                                            <small class="text-muted fw-semibold" tkey="seed-step1-label">Step 1 of 2 — Your Seed Phrase</small>
+                                            <div class="btn-group btn-group-sm">
+                                                <button class="btn btn-outline-secondary seed-wlen-btn active" data-len="256" type="button">24 words</button>
+                                                <button class="btn btn-outline-secondary seed-wlen-btn" data-len="128" type="button">12 words</button>
+                                            </div>
+                                        </div>
+                                        <div id="seed-word-grid" class="mb-2 p-2 border rounded bg-body-secondary"></div>
+                                        <div class="alert alert-warning small py-2 mb-2" id="seed-generate-warning" tkey="seed-write-warning">⚠️ Write these words down in order and store them safely. Anyone with these words controls your funds.</div>
+                                        <div class="d-flex gap-2 align-items-center">
+                                            <button class="btn btn-sm btn-danger" id="seed-create-cancel1" type="button" tkey="cancel">Cancel</button>
+                                            <button class="btn btn-sm btn-outline-secondary" id="seed-btn-print" type="button"><span class="fa-solid fa-download"></span> <span tkey="seed-print">Save PNG</span></button>
+                                            <button class="btn btn-sm btn-primary ms-auto" id="seed-btn-to-verify" type="button" tkey="seed-next">Next →</button>
+                                        </div>
+                                    </div>
+                                    <div id="seed-create-step2" class="d-none">
+                                        <small class="text-muted fw-semibold d-block mb-2" tkey="seed-step2-label">Step 2 of 2 — Verify Seed Phrase</small>
+                                        <p class="small" tkey="seed-verify-desc">Enter the words at these positions to confirm you saved them correctly:</p>
+                                        <div id="seed-verify-fields" class="mb-3"></div>
+                                        <div id="seed-verify-error" class="text-danger small mb-2 d-none" tkey="seed-verify-error-msg">Incorrect words. Please check your phrase.</div>
+                                        <div class="d-flex gap-2 align-items-center">
+                                            <button class="btn btn-sm btn-danger" id="seed-create-cancel2" type="button" tkey="cancel">Cancel</button>
+                                            <button class="btn btn-primary btn-sm ms-auto" id="seed-verify-confirm" type="button" tkey="seed-confirm-pin">Confirm &amp; Set PIN</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="seed-restore" class="d-none">
+                                    <small class="text-muted fw-semibold d-block mb-2" tkey="seed-restore-title">Restore from Seed Phrase</small>
+                                    <div class="d-flex align-items-center gap-2 mb-2">
+                                        <label class="small text-nowrap mb-0" tkey="seed-word-count">Word count:</label>
+                                        <select id="restore-wordcount" class="form-select form-select-sm">
+                                            <option value="24">24 words</option>
+                                            <option value="12">12 words</option>
+                                        </select>
+                                    </div>
+                                    <textarea id="restore-input" class="form-control font-monospace mb-2" rows="4"
+                                        tkey="seed-restore-placeholder" placeholder="Enter your seed phrase words separated by spaces…"
+                                        autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></textarea>
+                                    <div id="restore-word-error" class="text-danger small mb-2 d-none"></div>
+                                    <div class="mb-2">
+                                        <button type="button" class="btn btn-sm btn-outline-primary" data-bs-toggle="collapse" data-bs-target="#restore-advanced" tkey="seed-advanced">Advanced ▼</button>
+                                        <div class="collapse" id="restore-advanced">
+                                            <div class="border rounded p-2 mt-1 small">
+                                                <div class="mb-2">
+                                                    <label class="form-label mb-1" tkey="seed-deriv-path">Derivation path</label>
+                                                    <input id="restore-path" type="text" class="form-control form-control-sm font-monospace" value="m/84'/738'/0'/0/0" placeholder="m/84'/738'/0'/0/0">
+                                                    <div class="form-text" tkey="seed-deriv-hint">Default: BIP84 native SegWit. Change for Electrum/Ledger compatibility.</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex gap-2">
+                                        <button id="seed-restore-cancel" class="btn btn-danger btn-sm" type="button" tkey="cancel">Cancel</button>
+                                        <button class="btn btn-primary ms-auto" id="seed-restore-btn" type="button" tkey="seed-restore-btn">Restore &amp; Set PIN</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <form id="open-regular-form" class="open-form tab-item d-none" data-tab="open-regular">
+                                <div class="alert alert-warning small py-2 mb-2" role="alert">
+                                    <span tkey="legacy-warn-password">⚠️ <strong>Not recommended.</strong> This method derives a key from a password hash and is kept for backward compatibility only. Please migrate your funds to a Seed Phrase wallet.</span>
+                                </div>
+                                <div class="input-group pb-2">
+                                    <input id="open-email" class="form-control" type="text" autocomplete="off" tkey="email-address">
+                                </div>
+                                <div class="input-group">
+                                    <input id="open-password" class="form-control" type="password" autocomplete="new-password" tkey="password">
+                                    <input id="open-password-confirm" class="form-control" type="password" autocomplete="new-password" tkey="password-confirm">
+                                    <button class="btn btn-primary b-width" type="submit" id="open-regular-wallet" tkey="open"></button>
+                                </div>
+                            </form>
+                            <form id="open-key-form" class="open-form tab-item d-none" data-tab="open-key">
+                                <div class="alert alert-warning small py-2 mb-2" role="alert">
+                                    <span tkey="legacy-warn-key">⚠️ <strong>Not recommended.</strong> Raw private key import is provided for compatibility only. Use a Seed Phrase wallet for better security and recoverability.</span>
+                                </div>
+                                <div class="input-group">
+                                    <input id="passphrase" class="form-control" type="password" autocomplete="off" tkey="wif-key">
+                                    <button class="btn btn-primary b-width" type="submit" id="open-key-wallet" tkey="open"></button>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="card-footer">
+                            <div class="footer-item tab-item" data-tab="open-seed">
+                                <small class="text-muted">BIP39 / BIP84 · m/84'/738'/0'/0/0</small>
+                            </div>
+                            <div class="footer-item tab-item d-none" data-tab="open-regular" tkey="open-reminder"></div>
+                        </div>
+                    </div>
+                </div>
+                <div id="wallet-block" class="d-none">
+                    <div class="card mb-3">
+                        <div class="card-header">
+                            <ul class="nav nav-tabs card-header-tabs">
+                                <li class="nav-item me-2">
+                                    <a class="nav-link tab-link active" data-tab-name="wallet-balance" data-tab-family="wallet-block" href="#" tkey="wallet"></a>
+                                </li>
+                                <li class="nav-item me-2">
+                                    <a class="nav-link tab-link" data-tab-name="wallet-send" data-tab-family="wallet-block" href="#" tkey="send"></a>
+                                </li>
+                                <li class="nav-item me-2">
+                                    <a id="history-tab-link" class="nav-link tab-link" data-tab-name="wallet-history" data-tab-family="wallet-block" href="#" tkey="history"></a>
+                                </li>
+                                <li class="nav-item me-2">
+                                    <a class="nav-link tab-link" data-tab-name="wallet-settings" data-tab-family="wallet-block" href="#" tkey="settings"></a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link tab-link" data-tab-name="wallet-keys" data-tab-family="wallet-block" href="#" tkey="keys"></a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="card-body">
+                            <div class="text-center">
+                                <div class="tab-item" data-tab="wallet-balance">
+                                    <div id="qr-code-address" class="qr-code"></div>
+                                    <div id="wallet-address" class="break-word mb-1"></div>
+                                    <div class="mb-1">
+                                        <button id="copy-address-btn" class="btn btn-sm btn-outline-secondary">
+                                            <span class="fa-solid fa-copy"></span>
+                                        </button>
+                                    </div>
+                                    <div class="wallet-balance mb-0 pb-0">
+                                        <span class="font-monospace amount"></span>
+                                        <span class="ticker"></span>
+                                    </div>
+                                    <div id="immature-balance-row-main" class="d-none mt-1">
+                                        <small class="text-warning">
+                                            <span class="fa-solid fa-lock"></span>
+                                            <span tkey="immature-mining">Immature (mining):</span> <b class="immature-amount"></b>
+                                            <span class="text-muted"> — <span tkey="immature-cannot-spend">cannot spend yet</span></span>
+                                        </small>
+                                    </div>
+                                    <div id="unconfirmed-balance-row-main" class="d-none mt-1">
+                                        <small class="text-info">
+                                            <span class="fa-solid fa-clock"></span>
+                                            <span tkey="unconfirmed-balance">Unconfirmed:</span> <b class="unconfirmed-amount"></b>
+                                            <span class="text-muted"> — <span tkey="unconfirmed-mempool">pending in mempool</span></span>
+                                        </small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="wallet-send" class="tab-item d-none" data-tab="wallet-send">
+                                <div class="mb-3 d-md-flex justify-content-between align-items-end">
+                                    <div class="text-center text-md-start">
+                                        <div>
+                                            <span tkey="available-balance"></span>
+                                            <b class="wallet-balance balance-small">
+                                                <span class="amount"></span>
+                                                <span class="ticker"></span>
+                                            </b>
+                                        </div>
+                                        <div id="immature-balance-row" class="d-none mt-1">
+                                            <span class="text-warning immature-balance-label">
+                                                <span class="fa-solid fa-lock"></span>
+                                                <span tkey="immature-mining">Immature (mining):</span>
+                                                <b class="immature-amount"></b>
+                                            </span>
+                                        </div>
+                                        <div id="unconfirmed-balance-row" class="d-none mt-1">
+                                            <span class="text-info">
+                                                <span class="fa-solid fa-clock"></span>
+                                                <span tkey="unconfirmed-balance">Unconfirmed:</span>
+                                                <b class="unconfirmed-amount"></b>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="text-center text-md-end mt-2 mt-md-0 flex-shrink-0">
+                                        <a href="#" id="send-qr" class="text-body pe-2">
+                                            <span tkey="scan-qr"></span>
+                                            <span class="fa-solid fa-camera"></span>
+                                        </a>
+                                        <a href="#" id="send-reset" class="text-body">
+                                            <span tkey="reset"></span>
+                                            <span class="fa-solid fa-rotate"></span>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div id="send-outputs">
+                                    <div class="send-outputs-item mb-2">
+                                        <input name="send-address" class="form-control mb-1" type="text" value="" autocomplete="off" tkey="enter-address">
+                                        <div class="input-group">
+                                            <input name="send-amount" class="form-control" type="text" value="" autocomplete="off" tkey="amount">
+                                            <button class="send-max btn btn-outline-secondary" type="button">MAX</button>
+                                            <button id="add-output" class="btn btn-outline-success">
+                                                <span class="fa-solid fa-plus"></span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mb-2">
+                                    <!-- Mobile: Send first, Manual Fee second. Desktop: Manual Fee left, Send right. -->
+                                    <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-md-between gap-2">
+                                        <div class="order-1 order-md-0 text-center text-md-start">
+                                            <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="collapse" data-bs-target="#send-fee-panel" tkey="manual-fee">Manual Fee</button>
+                                        </div>
+                                        <div class="order-0 order-md-1 text-center text-md-end">
+                                            <button class="btn btn-primary px-4" type="submit" id="send-tx" tkey="send" disabled></button>
+                                        </div>
+                                    </div>
+                                    <div class="collapse" id="send-fee-panel">
+                                        <div class="d-flex justify-content-center justify-content-md-start mt-2">
+                                            <input id="send-fee" class="form-control send-fee-input" placeholder="Fee" type="text" value="" autocomplete="off">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="text-center text-md-start mt-2">
+                                    <button type="button" id="coin-control-toggle" class="btn btn-sm btn-outline-primary">
+                                        <span class="fa-solid fa-sliders"></span>
+                                        <span id="coin-control-toggle-text" tkey="coin-control">Coin Control</span>
+                                    </button>
+                                </div>
+                                <div id="coin-control-panel" class="d-none mt-2 border rounded p-2">
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <div>
+                                            <input type="checkbox" id="coin-control-enable">
+                                            <label for="coin-control-enable" class="mb-0 ms-1" tkey="coin-control-manual">Manual UTXO selection</label>
+                                        </div>
+                                        <div class="d-flex gap-1">
+                                            <button type="button" id="coin-control-select-all" class="btn btn-sm btn-primary" tkey="coin-control-select-all">Select all mature</button>
+                                            <button type="button" id="coin-control-deselect-all" class="btn btn-sm btn-outline-primary" tkey="coin-control-deselect-all">Deselect all</button>
+                                        </div>
+                                    </div>
+                                    <div id="coin-control-list" class="table-responsive">
+                                        <table class="table table-sm table-borderless mb-0" id="coin-control-table">
+                                            <thead>
+                                                <tr>
+                                                    <th class="cc-th-check"></th>
+                                                    <th class="cc-sort-th" data-sort="amount"><span class="cc-sort-btn"><span tkey="amount">Amount</span><i class="cc-sort-icon fa-solid fa-sort"></i></span></th>
+                                                    <th class="cc-sort-th" data-sort="confs"><span class="cc-sort-btn"><span tkey="coin-control-confs">Confs</span><i class="cc-sort-icon fa-solid fa-sort"></i></span></th>
+                                                    <th class="cc-sort-th" data-sort="type"><span class="cc-sort-btn"><span tkey="coin-control-type">Type</span><i class="cc-sort-icon fa-solid fa-sort"></i></span></th>
+                                                    <th class="cc-sort-th" data-sort="status"><span class="cc-sort-btn"><span tkey="coin-control-status">Status</span><i class="cc-sort-icon fa-solid fa-sort"></i></span></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="coin-control-tbody"></tbody>
+                                        </table>
+                                    </div>
+                                    <div id="coin-control-selected-info" class="mt-1 text-muted"></div>
+                                </div>
+                            </div>
+                            <div class="tab-item d-none" data-tab="wallet-keys">
+                                <div id="wallet-keys">
+                                    <div id="wallet-keys-pubkey">
+                                        <label tkey="public-key"></label>
+                                        <div class="input-group pb-2">
+                                            <input class="form-control" readonly type="text">
+                                        </div>
+                                    </div>
+                                    <div id="wallet-keys-script">
+                                        <label tkey="redeem-script">Redeem Script <i>(SegWit)</i></label>
+                                        <div class="input-group pb-2">
+                                            <input class="form-control" readonly type="text">
+                                        </div>
+                                    </div>
+                                    <div id="wallet-keys-privkey">
+                                        <label tkey="private-key"></label>
+                                        <div id="privkey-show-row" class="pb-2">
+                                            <button id="toggle-wallet-privkey" class="btn btn-primary b-width" type="button" tkey="show"></button>
+                                        </div>
+                                        <div id="privkey-reveal-row" class="d-none pb-2">
+                                            <div class="d-flex align-items-center gap-2 mb-2">
+                                                <canvas id="wallet-privkey-canvas" class="privkey-canvas"></canvas>
+                                                <button id="wallet-privkey-copy-btn" class="btn btn-outline-secondary flex-shrink-0" type="button"><span class="fa-solid fa-copy"></span></button>
+                                            </div>
+                                            <button id="privkey-hide-btn" class="btn btn-primary b-width" type="button" tkey="hide"></button>
+                                        </div>
+                                    </div>
+                                    <div id="wallet-keys-seed" class="d-none">
+                                        <label tkey="seed-backup-label">Seed Phrase Backup</label>
+                                        <div id="wallet-seed-hidden">
+                                            <button id="btn-show-seed" class="btn btn-outline-warning btn-sm w-100" type="button" tkey="seed-show-btn">🌱 Show Seed Phrase (requires PIN)</button>
+                                        </div>
+                                        <div id="wallet-seed-revealed" class="d-none">
+                                            <div id="wallet-seed-grid" class="p-2 border rounded bg-body-secondary mb-2"></div>
+                                            <div class="d-flex gap-2">
+                                                <button id="btn-save-seed-png" class="btn btn-sm btn-outline-secondary" type="button"><span class="fa-solid fa-download"></span> <span tkey="seed-print">Save PNG</span></button>
+                                                <button id="btn-hide-seed" class="btn btn-sm btn-outline-secondary ms-auto" type="button" tkey="seed-hide-btn">🔒 Hide</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-item d-none" data-tab="wallet-settings">
+                                    <div id="address-type-select" class="mb-3">
+                                        <label tkey="address-type"></label>
+                                        <div class="input-group pb-2">
+                                            <select class="form-select">
+                                                <option value="taproot">taproot</option>
+                                                <option value="bech32">bech32</option>
+                                                <option value="segwit">segwit</option>
+                                                <option value="legacy">legacy</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div id="wallet-backend" class="mb-3">
+                                        <label tkey="wallet-backend"></label>
+                                        <div class="input-group pb-2">
+                                            <input class="form-control" type="text" tkey="wallet-api">
+                                            <button class="btn btn-outline-secondary b-width" type="button" tkey="update"></button>
+                                        </div>
+                                    </div>
+                                    <div id="forget-wallet-section" class="d-none text-center mt-2">
+                                        <button id="settings-forget-wallet" class="btn btn-danger" type="button" tkey="settings-forget-wallet">Forget saved wallet</button>
+                                    </div>
+                                    <div id="passkey-settings-section" class="mb-3 d-none">
+                                        <hr class="my-2">
+                                        <label class="fw-semibold"><span class="fa-solid fa-fingerprint"></span> <span tkey="passkey-settings-label">Passkey (Biometric unlock)</span></label>
+                                        <div id="passkey-settings-status" class="text-muted small mb-2"></div>
+                                        <button id="passkey-settings-btn" class="btn btn-sm btn-outline-primary" type="button"></button>
+                                    </div>
+                                    <div class="text-muted small text-center mt-3">
+                                        <span tkey="version"></span> <b id="wallet-version"></b>
+                                    </div>
+                                </div>
+                            <div class="tab-item d-none" data-tab="wallet-history">
+                                <div class="history-overflow">
+                                    <div id="history-list">
+                                        <div class="text-muted text-center py-3 small" tkey="history-loading">Loading history…</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <button id="footer-close" type="button" class="btn btn-danger w-100 footer-item" tkey="close"></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="broadcast" class="router-page">
+            <div class="container">
+                <div class="card mb-3">
+                    <div class="card-header">
+                        <b tkey="broadcast-transaction"></b>
+                    </div>
+                    <div class="card-body">
+                        <textarea class="form-control" id="transaction-broadcast-raw" rows="4" tkey="enter-transaction"></textarea>
+                    </div>
+                    <div class="card-footer">
+                        <button id="footer-broadcast" type="button" class="btn btn-primary w-100 footer-item" tkey="broadcast"></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="send-modal" class="modal" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-md" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 id="send-title" class="modal-title"></h5>
+                        <button id="send-close" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div id="send-modal-error" class="alert alert-danger d-none" role="alert"></div>
+                        <div id="confirm-screen">
+                            <span tkey="send-warning"></span> <strong id="confirm-amount"></strong>. <span tkey="send-warning-reverse"></span>
+                        </div>
+                        <div id="status-screen" class="break-lines d-none">
+                            <span></span>
+                            <div class="extra-info"></div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button id="send-cancel" type="button" class="btn me-auto btn-danger" data-bs-dismiss="modal" tkey="cancel"></button>
+                        <button id="send-confirm" type="button" class="btn btn-primary" tkey="send-it"></button>
+                        <button id="send-close-footer" type="button" class="btn btn-danger d-none disabled" data-bs-dismiss="modal" tkey="close"></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="scan-modal" class="modal" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-md" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" tkey="scan-modal-title"></h5>
+                        <button id="scan-close" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div id="loading-message"></div>
+                        <canvas id="scan-canvas" hidden class="w-100"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="pin-modal" class="modal" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-sm" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 id="pin-modal-title" class="modal-title" tkey="pin-title-default">Wallet PIN</h5>
+                    </div>
+                    <div class="modal-body">
+                        <p id="pin-modal-desc" class="text-muted small"></p>
+                        <input id="pin-input" type="password" class="form-control" tkey="pin-input-placeholder" placeholder="PIN (min 8 chars)" maxlength="64" autocomplete="current-password">
+                        <div id="pin-caps-warning" class="text-warning small mt-1 d-none"><span class="fa-solid fa-triangle-exclamation"></span> CAPS LOCK!</div>
+                        <div id="pin-error" class="text-danger small mt-1 d-none" tkey="pin-login-error">Wrong PIN, try again.</div>
+                        <button id="pin-modal-pk-btn" class="btn btn-outline-primary btn-sm w-100 mt-2 d-none" type="button">
+                            <span class="fa-solid fa-fingerprint"></span>
+                            <span tkey="passkey-use-instead">Use Passkey instead</span>
+                        </button>
+                    </div>
+                    <div class="modal-footer">
+                        <button id="pin-cancel" type="button" class="btn btn-danger" tkey="cancel">Cancel</button>
+                        <button id="pin-confirm" type="button" class="btn btn-primary" tkey="ok">OK</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Forget Wallet Confirmation Modal -->
+        <div id="forget-wallet-modal" class="modal" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-md" role="document">
+                <div class="modal-content">
+                    <div class="modal-header modal-header-danger">
+                        <h5 class="modal-title" tkey="forget-wallet-modal-title">⚠️ Clear Wallet</h5>
+                    </div>
+                    <div class="modal-body">
+                        <div class="alert alert-danger mb-3">
+                            <strong><span class="fa-solid fa-triangle-exclamation"></span> <span tkey="forget-wallet-irreversible-label">Irreversible operation!</span></strong><br>
+                            <span tkey="forget-wallet-warning-text">If you do not have a backup of your seed phrase or private key, you will permanently lose access to your funds.</span>
+                        </div>
+                        <p class="text-muted small" tkey="forget-wallet-type-to-confirm">To confirm, type <strong>Yes</strong> in the field below:</p>
+                        <input id="forget-wallet-confirm-input" type="text" class="form-control" autocomplete="off" placeholder="Yes">
+                    </div>
+                    <div class="modal-footer">
+                        <button id="forget-wallet-modal-no" type="button" class="btn btn-secondary me-auto" data-bs-dismiss="modal" tkey="forget-wallet-btn-no">No, cancel</button>
+                        <button id="forget-wallet-modal-yes" type="button" class="btn btn-danger" disabled tkey="forget-wallet-btn-yes">Yes, clear wallet</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="disclaimer mb-3">
+            <div class="container text-center">
+                <small class="text-muted" tkey="disclaimer"></small>
+            </div>
+        </div>
+        <footer class="mb-3">
+            <div class="container text-center">
+                <span class="fa-brands fa-github"></span> <a target="_blank" rel="noopener noreferrer" href="https://github.com/bitweb-project/web-wallet2">Bitweb</a>
+            </div>
+        </footer>
+        <!-- Wallet Logic -->
+        <script src="js/wallet.js"
+                integrity="sha512-6T44PiTwK0v1bgpI1MTGCsheju6FXKBmXFtPoOtGwBKXXccKJFQoaIopJJU2abryjGHy1jNNWYf/AIkLIJ45xw=="
+                crossorigin="anonymous"></script>
+    </body>
+</html>

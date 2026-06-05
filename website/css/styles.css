@@ -1,0 +1,333 @@
+html { height: 100%; }
+html, body { min-height: 100%; }
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    padding-top: 75px;
+    padding-bottom: 56px;
+    position: relative;
+}
+/* Logo — explicit size so SVG doesn't collapse */
+/* vertical alignment handled by parent d-flex align-items-center */
+#logo { width: 28px; height: 28px; max-width: 28px; max-height: 28px; margin-right: 6px; flex-shrink: 0; }
+/* Brand text: hidden on mobile, shown on desktop */
+.brand-text { display: none; }
+@media (min-width: 992px) { .brand-text { display: inline; } }
+.b-width { min-width: 100px; }
+.navbar-dark .navbar-nav .nav-link.active { color: rgba(255,255,255,.75); }
+.router-page { display: none; }
+.c-pointer { cursor: pointer; }
+.disabled { pointer-events: none; }
+.break-lines {
+    -ms-word-break: break-all;
+    word-break: break-all;
+    word-break: break-word;
+    -webkit-hyphens: auto;
+    -moz-hyphens: auto;
+    -ms-hyphens: auto;
+    hyphens: auto;
+}
+.qr-code {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 8px;
+}
+.qr-code canvas, .qr-code img { max-width: 100%; display: block; }
+.wallet-balance { font-size: 19px; }
+.wallet-balance .font-monospace { font-size: 20px; }
+@media (max-width: 991.98px) {
+    /* Hide hamburger — all items are always visible in a single row */
+    .navbar-toggler {
+        display: none !important;
+    }
+    /* Container becomes the single space-evenly distributor for ALL items:
+       logo + 4 nav items all get equal spacing without an extra gap at brand */
+    .navbar-expand-lg > .container,
+    .navbar-expand-lg > .container-fluid {
+        padding-right: 10px;
+        padding-left: 10px;
+        flex-wrap: nowrap;
+        justify-content: space-evenly;
+        align-items: center;
+    }
+    /* Remove Bootstrap's default right margin from brand so logo
+       participates in space-evenly just like every nav item */
+    .navbar-expand-lg .navbar-brand {
+        margin-right: 0;
+    }
+    /* Make the collapse wrapper transparent to flex layout —
+       its children become direct flex items of .container */
+    #navbarResponsive {
+        display: contents !important;
+    }
+    /* Make the nav list transparent to flex layout —
+       li.nav-item elements become direct flex items of .container */
+    .navbar-collapse .navbar-nav {
+        display: contents;
+    }
+    /* Each nav item: auto size, no extra margins */
+    .navbar-collapse .nav-item {
+        width: auto;
+        text-align: center;
+        margin-left: 0 !important;
+    }
+    /* Compact nav links */
+    .navbar-collapse .nav-link {
+        padding: 0.3rem 0.45rem;
+        font-size: 13px;
+        white-space: nowrap;
+        width: auto;
+        display: inline-block;
+        text-align: left;
+    }
+    /* Dropdown: keep position context so menu anchors correctly */
+    .navbar-collapse .navbar-nav .dropdown {
+        position: relative;
+        width: auto;
+    }
+    /* Dropdown menu opens downward, aligned to the right edge of its trigger */
+    .navbar-collapse .navbar-nav .dropdown-menu {
+        position: absolute !important;
+        right: 0 !important;
+        left: auto !important;
+        top: 100% !important;
+        float: none !important;
+        min-width: 10rem;
+    }
+}
+.balance-small { font-size: 15px; }
+.break-word { word-wrap: break-word; }
+.pin-login-card .card-body { padding: 1.5rem; }
+.pin-login-title { font-size: 15px; color: var(--bs-secondary-color); margin-bottom: 12px; text-align: center; }
+/* ── Extracted from inline styles ─────────────────────────────────────────── */
+/* Seed word grids (create + revealed backup) */
+#seed-word-grid,
+#wallet-seed-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 5px;
+    font-size: 13px;
+}
+/* Restore word-count select */
+#restore-wordcount { max-width: 100px; }
+/* Address display */
+#wallet-address { font-size: 14px; word-break: break-all; }
+#copy-address-btn { padding: 1px 7px; font-size: 18px; line-height: 1.6; }
+/* Immature balance label (send tab) — same size as unconfirmed */
+/* Coin control */
+#coin-control-toggle { font-size: 14px; padding: 2px 8px; }
+#coin-control-panel { font-size: 12px; }
+#coin-control-list { max-height: 200px; overflow-y: auto; }
+.cc-th-check { width: 28px; }
+#coin-control-select-all,
+#coin-control-deselect-all { font-size: 11px; padding: 2px 7px; line-height: 1.4; }
+/* Private key canvas — matches form-control look */
+.privkey-canvas {
+    display: block;
+    flex: 1 1 auto;
+    min-width: 0;
+    height: calc(1.5em + 0.75rem + 2px);
+    border: 1px solid var(--bs-border-color);
+    border-radius: var(--bs-border-radius);
+    box-sizing: border-box;
+}
+/* History tab overflow wrapper */
+.history-overflow { overflow: hidden; }
+/* Disclaimer max-width */
+.disclaimer small { max-width: 1100px; display: inline-block; }
+/* === TRANSACTION HISTORY — stable table with horizontal scroll on mobile === */
+.history-overflow {
+    overflow-x: auto;
+}
+#history-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    min-width: 500px;
+}
+#history-table th,
+#history-table td {
+    padding: 7px 6px;
+    border-bottom: 1px solid var(--bs-border-color);
+    vertical-align: middle;
+}
+#history-table th {
+    text-align: left;
+    font-weight: 600;
+    color: var(--bs-secondary-color);
+    font-size: 12px;
+    white-space: nowrap;
+}
+#history-table td:first-child,
+#history-table th:first-child { padding-left: 0; }
+#history-table td:last-child,
+#history-table th:last-child { padding-right: 0; }
+.tx-dir-label {
+    font-weight: 600;
+    white-space: nowrap;
+}
+.tx-dir-label.text-success { color: var(--bs-success); }
+.tx-dir-label.text-danger  { color: var(--bs-danger); }
+.tx-dir-label.text-info    { color: var(--bs-info); }
+.history-tx-hash {
+    font-family: monospace;
+    font-size: 12px;
+    word-break: break-word;
+    max-width: 300px;
+}
+.history-tx-hash a {
+    color: var(--bs-link-color);
+    text-decoration: none;
+}
+.history-tx-hash a:hover {
+    text-decoration: underline;
+}
+.history-ts {
+    font-size: 11px;
+    color: var(--bs-secondary-color);
+    white-space: nowrap;
+}
+.h-copy-btn {
+    padding: 2px 8px;
+    font-size: 13px;
+}
+.h-badge {
+    white-space: nowrap;
+    text-align: center;
+}
+/* View all link row */
+.history-viewall {
+    text-align: center;
+    padding: 10px 0 0 0;
+    background: transparent;
+}
+.history-viewall td {
+    border-bottom: none;
+}
+/* Mobile: allow horizontal scroll, no layout breaking */
+/* Mobile: two-row layout per transaction */
+.tx-row-mob { display: none; }
+@media (max-width: 767px) {
+    #history-table {
+        font-size: 12px;
+        min-width: 0;
+    }
+    #history-table thead { display: none; }
+    .tx-row-desk { display: none; }
+    .tx-row-mob  { display: table-row; }
+    /* Row 1: amount + status — no bottom border, tight padding */
+    .tx-row-mob-1 td {
+        border-bottom: none;
+        padding-bottom: 2px;
+    }
+    /* Row 2: hash + date + copy — bottom border closes the group */
+    .tx-row-mob-2 td {
+        padding-top: 2px;
+    }
+    /* Hash cell: ellipsis via inner div */
+    .history-tx-hash-m {
+        max-width: 0;        /* forces table cell to shrink so inner div can ellipsis */
+        width: 60%;
+    }
+    .hash-m-inner {
+        font-family: monospace;
+        font-size: 12px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+    .hash-m-inner a {
+        color: var(--bs-link-color);
+        text-decoration: none;
+    }
+    .hash-m-inner a:hover { text-decoration: underline; }
+    .history-ts { font-size: 10px; }
+}
+/* Seed word canvas cell */
+.seed-canvas-cell { overflow: hidden; line-height: 0; }
+.seed-canvas-cell canvas { display: block; max-width: 100%; }
+/* Seed verify step — word-number badge */
+.seed-verify-num { min-width: 3rem; }
+/* Advanced collapse toggle in seed restore */
+[data-bs-target="#restore-advanced"] { font-size: 11px; padding: 2px 7px; line-height: 1.4; }
+/* Manual Fee collapse toggle */
+[data-bs-target="#send-fee-panel"] { font-size: 16px; padding: 2px 7px; line-height: 1.4; }
+/* Fee input — centered container, narrow enough for "46.000.000.00000000" */
+.send-fee-input { max-width: 342px; }
+/* Clipboard scratch textarea — off-screen, invisible, non-interactive */
+.clip-scratch {
+    position: fixed;
+    opacity: 0;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+}
+/* Forget-wallet confirmation modal — danger header */
+.modal-header-danger {
+    background-color: var(--bs-danger);
+    color: #fff;
+}
+/* Coin control — sortable column headers */
+.cc-sort-th { cursor: pointer; padding: 4px 2px !important; }
+.cc-sort-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 12px;
+    padding: 1px 6px;
+    border: 1px solid var(--bs-border-color);
+    border-radius: var(--bs-border-radius-sm);
+    white-space: nowrap;
+    transition: border-color 0.15s, color 0.15s;
+}
+.cc-sort-th:hover .cc-sort-btn {
+    border-color: var(--bs-primary);
+    color: var(--bs-primary);
+}
+.cc-sort-th.cc-sort-active .cc-sort-btn {
+    border-color: var(--bs-primary);
+    color: var(--bs-primary);
+    font-weight: 600;
+}
+.cc-sort-icon { font-size: 0.85em; opacity: 0.5; }
+.cc-sort-active .cc-sort-icon { opacity: 1; }
+/* Send form — MAX button */
+#send-max { font-size: 11px; padding: 0 8px; font-weight: 600; letter-spacing: 0.03em; }
+/* ── PWA safe-area (notch / home indicator) ─────────────────────────────── */
+.navbar.fixed-top {
+    padding-top: max(0.5rem, env(safe-area-inset-top));
+}
+body {
+    padding-top: calc(75px + env(safe-area-inset-top));
+    padding-bottom: max(56px, calc(56px + env(safe-area-inset-bottom)));
+}
+/* ── Mobile: open-block nav tabs + regular wallet form ──────────────────── */
+@media (max-width: 767px) {
+    /* Center the tab row (Seed / Regular / Key) */
+    #open-block .card-header .nav-tabs {
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+    /* Stack email / password / confirm each on its own line */
+    #open-regular-form .input-group {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    #open-regular-form .input-group .form-control {
+        width: 100%;
+        /* reset Bootstrap's group border-radius overrides */
+        border-radius: var(--bs-border-radius) !important;
+        margin-bottom: 8px;
+    }
+    /* Remove extra bottom-padding Bootstrap adds inside pb-2 group */
+    #open-regular-form .input-group.pb-2 {
+        padding-bottom: 0 !important;
+    }
+    /* Open button: auto width, centered */
+    #open-regular-form .input-group .btn {
+        width: auto;
+        align-self: center;
+        border-radius: var(--bs-border-radius) !important;
+        margin-top: 4px;
+        min-width: 120px;
+    }
+}

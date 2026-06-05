@@ -1,0 +1,36 @@
+/*
+  X-Frame-Options: DENY
+  X-Content-Type-Options: nosniff
+  Permissions-Policy: camera=(self), microphone=(), geolocation=(), payment=(), usb=(), bluetooth=()
+  Referrer-Policy: no-referrer
+  Strict-Transport-Security: max-age=31536000; includeSubDomains
+  Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self'; connect-src 'self' https://api2.bitwebcore.net wss://api2.bitwebcore.net; worker-src 'self'; img-src 'self' data: blob:; media-src blob:; font-src 'self'; frame-src 'none'; object-src 'none'; upgrade-insecure-requests; base-uri 'self'; form-action 'self'
+  Cross-Origin-Opener-Policy: same-origin
+  Cross-Origin-Resource-Policy: same-origin
+  Cross-Origin-Embedder-Policy: require-corp
+
+/*.html
+  Cache-Control: no-store, no-cache, must-revalidate
+
+/index.html
+  Cache-Control: no-store, no-cache, must-revalidate
+
+/css/*
+  Content-Type: text/css; charset=utf-8
+  Cache-Control: public, max-age=172800
+
+/webfonts/*
+  Cache-Control: public, max-age=172800
+
+/js/*
+  Cache-Control: no-cache, must-revalidate
+
+/images/*
+  Cache-Control: public, max-age=172800
+
+/sw.js
+  Cache-Control: no-store, no-cache, must-revalidate
+  Service-Worker-Allowed: /
+
+/manifest.json
+  Cache-Control: no-cache, must-revalidate
