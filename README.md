@@ -64,7 +64,7 @@ All three bundles use only **MIT-licensed** dependencies. Build reproducibility 
 | qrcode | 1.5.4 | MIT |
 | bootstrap | 5.x | MIT |
 | jquery | 3.x | MIT |
-| socket.io (client) | — | MIT |
+| socket.io (client) | 4.8.1 | MIT |
 
 ---
 
