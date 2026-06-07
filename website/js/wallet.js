@@ -51,8 +51,8 @@
         }
     };
     const blockExplorer = {
-        'address': function(address) { return 'https://explorertest.bitwebcore.net/address/' + encodeURIComponent(address) + '/' },
-        'tx':      function(tx)      { return 'https://explorertest.bitwebcore.net/tx/' + encodeURIComponent(tx) + '/' }
+        'address': function(address) { return 'https://explorer.bitwebcore.net/address/' + encodeURIComponent(address) + '/' },
+        'tx':      function(tx)      { return 'https://explorer.bitwebcore.net/tx/' + encodeURIComponent(tx) + '/' }
     };
     let stream      = null;
     let scanVideo   = null;
