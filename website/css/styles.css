@@ -91,7 +91,7 @@ body {
         left: auto !important;
         top: 100% !important;
         float: none !important;
-        min-width: 10rem;
+        min-width: 0;
     }
 }
 .balance-small { font-size: 15px; }
@@ -331,3 +331,5 @@ body {
         min-width: 120px;
     }
 }
+
+.navbar .dropdown-menu { --bs-dropdown-min-width: 0; }

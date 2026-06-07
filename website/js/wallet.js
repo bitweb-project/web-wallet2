@@ -2344,10 +2344,11 @@
         });
         $('#footer-broadcast').click(async function() {
             const rawtx  = $('#transaction-broadcast-raw');
-            const rawHex = rawtx.val();
-            rawtx.val('');
+            const rawHex = rawtx.val().trim();
+            if (!rawHex) return;
             const data = await transactionBroadcast(rawHex);
             if (data.error == null) {
+                rawtx.val('');
                 showMessage(escHtml(messages.tx['success']) + '<a href="' + escHtml(blockExplorer.tx(data.result)) + '" target="_blank" rel="noopener noreferrer">' + escHtml(data.result) + '</a>');
             } else {
                 showMessage(messages.error['broadcast-failed']);
