@@ -44,8 +44,8 @@
                 'coinbase': 100,
                 'extended': {
                     'enabled': true,
-                    'start':   200,
-                    'depth':   200
+                    'start':   60000,
+                    'depth':   9300
                 }
             }
         }
