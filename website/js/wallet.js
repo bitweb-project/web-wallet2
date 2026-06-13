@@ -107,6 +107,8 @@
         document.documentElement.setAttribute('data-bs-theme', resolved);
         const labels = { light: getText('theme-light'), dark: getText('theme-dark'), auto: getText('theme-auto') };
         $('#theme-label').text(labels[mode] || getText('theme-auto'));
+        $('.theme-option').removeClass('active');
+        $('.theme-option[data-theme="' + mode + '"]').addClass('active');
     }
     function setTheme(mode) {
         try { localStorage.setItem('bte_cfg_theme', mode) } catch(e) {}
