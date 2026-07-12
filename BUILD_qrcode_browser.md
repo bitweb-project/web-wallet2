@@ -14,13 +14,13 @@ so this build produces one. The bundle renders QR codes directly to `<canvas>`.
 
 ## Requirements
 
-| Tool     | Minimum version    | Verified build | Check            |
-|----------|--------------------|----------------|------------------|
-| Node.js  | **≥ 20.0.0**       | v24.15.0       | `node --version` |
-| npm      | **≥ 10**           | 11.13.0         | `npm --version`  |
-| Internet | registry.npmjs.org | —              | —                |
+| Tool     | Minimum version       | Verified build | Check            |
+|----------|-----------------------|----------------|------------------|
+| Node.js  | **≥ 20.0.0**          | v24.18.0       | `node --version` |
+| npm      | **= 11.16.0** (pinned)| 11.16.0        | `npm --version`  |
+| Internet | registry.npmjs.org    | —              | —                |
 
-The SRI hash in Step 7 was produced on **Node v24.15.0 + npm 11.13.0**. Any environment satisfying the minimum versions will produce a functionally equivalent bundle; the byte-for-byte hash matches only when built on the same Node + npm pair.
+The SRI hash in Step 7 was produced on **Node v24.18.0 + npm 11.16.0**. Any environment satisfying the minimum versions will produce a functionally equivalent bundle; the byte-for-byte hash matches only when built on the same Node + npm pair.
 
 ---
 
@@ -38,7 +38,8 @@ npm init -y
 
 ```bash
 npm install --save-exact qrcode@1.5.4
-npm install --save-exact esbuild@0.28.0
+npm install --save-exact esbuild@0.28.1
+npm approve-scripts esbuild
 ```
 
 ### What each package does
@@ -46,7 +47,7 @@ npm install --save-exact esbuild@0.28.0
 | Package | Version | Purpose | Repository |
 |---------|---------|---------|------------|
 | qrcode  | 1.5.4   | QR code generator — canvas/SVG/string output | github.com/soldair/node-qrcode |
-| esbuild | 0.28.0  | Bundler: CJS → single browser file | github.com/evanw/esbuild |
+| esbuild | 0.28.1  | Bundler: CJS → single browser file | github.com/evanw/esbuild |
 
 ### Expected integrity hashes (sha512, npm registry — identical on all machines)
 
@@ -54,8 +55,8 @@ npm install --save-exact esbuild@0.28.0
 qrcode@1.5.4
   sha512-1ca71Zgiu6ORjHqFBDpnSMTR2ReToX4l1Au1VFLyVeBTFavzQnv5JxMFr3ukHVKpSrSA2MCk0lNJSykjUfz7Zg==
 
-esbuild@0.28.0
-  sha512-sNR9MHpXSUV/XB4zmsFKN+QgVG82Cc7+/aaxJ8Adi8hyOac+EXptIp45QBPaVyX3N70664wRbTcLTOemCAnyqw==
+esbuild@0.28.1
+  sha512-HrJrvZv5ayxBzPfwphOoNzkzOIIlifzk0KJrGK2c8R4+LKpMtpYLQeUdjnwjWv/LZlkH2laZk+4w78pi99D4Vw==
 ```
 
 ### Automated integrity check
@@ -66,7 +67,7 @@ const fs = require('fs')
 const lock = JSON.parse(fs.readFileSync('package-lock.json', 'utf8'))
 const expected = {
   'qrcode':  'sha512-1ca71Zgiu6ORjHqFBDpnSMTR2ReToX4l1Au1VFLyVeBTFavzQnv5JxMFr3ukHVKpSrSA2MCk0lNJSykjUfz7Zg==',
-  'esbuild': 'sha512-sNR9MHpXSUV/XB4zmsFKN+QgVG82Cc7+/aaxJ8Adi8hyOac+EXptIp45QBPaVyX3N70664wRbTcLTOemCAnyqw==',
+  'esbuild': 'sha512-HrJrvZv5ayxBzPfwphOoNzkzOIIlifzk0KJrGK2c8R4+LKpMtpYLQeUdjnwjWv/LZlkH2laZk+4w78pi99D4Vw==',
 }
 let ok = true
 for (const [pkg, hash] of Object.entries(expected)) {
@@ -91,7 +92,7 @@ node check_qr_integrity.js
 Expected output:
 ```
 OK: qrcode@1.5.4
-OK: esbuild@0.28.0
+OK: esbuild@0.28.1
 
 ✅ All integrity hashes match
 ```
@@ -244,13 +245,13 @@ wc -c qrcode-browser.min.js
 
 # SRI hash:
 echo "sha512-$(openssl dgst -sha512 -binary qrcode-browser.min.js | openssl base64 -A)"
-# Expected: sha512-Owkt053PkI36baxtpawncRxvmsdahAekRZ87LRtEFpFCRE+q4E64TW5dGZIHqjum+tYByRcyHnSNSDkYkTDThg==
+# Expected: sha512-0RiajyQQDuNipQqIkIt255KZRF8cWgJobZ+H4FfqnXNcrS5F9tgKMXl81TMNflwUsPtXHeK6r/fx+4LXDrFYgw==
 ```
 
-**Verified hashes (Node v24.15.0 + npm 11.13.0):**
+**Verified hashes (Node v24.18.0 + npm 11.16.0):**
 ```
-24330 qrcode-browser.min.js
-sha512-Fylkwjj7d5d/OCmgh3/usBPvSY5+Q/cYSl1myDVYCw1alMz4Sam6/IWwuXh8D3auWeq2L6vD8hT/p/CI8ppYPg==
+24363 qrcode-browser.min.js
+sha512-0RiajyQQDuNipQqIkIt255KZRF8cWgJobZ+H4FfqnXNcrS5F9tgKMXl81TMNflwUsPtXHeK6r/fx+4LXDrFYgw==
 ```
 
 ```bash

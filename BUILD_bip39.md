@@ -22,13 +22,13 @@ Entropy source: `crypto.getRandomValues` (OS CSPRNG, native in all modern browse
 
 ## Requirements
 
-| Tool     | Minimum version    | Verified build | Check            |
-|----------|--------------------|----------------|------------------|
-| Node.js  | **≥ 20.0.0**       | v24.15.0       | `node --version` |
-| npm      | **≥ 10**           | 11.13.0        | `npm --version`  |
-| Internet | registry.npmjs.org | —              | —                |
+| Tool     | Minimum version        | Verified build | Check            |
+|----------|------------------------|----------------|------------------|
+| Node.js  | **≥ 20.0.0**           | v24.18.0       | `node --version` |
+| npm      | **= 11.16.0** (pinned) | 11.16.0        | `npm --version`  |
+| Internet | registry.npmjs.org     | —              | —                |
 
-The SRI hash in Step 7 was produced on **Node v24.15.0 + npm 11.13.0**. Any environment satisfying the minimum versions will produce a functionally equivalent bundle.
+The SRI hash in Step 7 was produced on **Node v24.18.0 + npm 11.16.0**. Any environment satisfying the minimum versions will produce a functionally equivalent bundle.
 
 ---
 
@@ -39,7 +39,7 @@ The SRI hash in Step 7 was produced on **Node v24.15.0 + npm 11.13.0**. Any envi
 | `@scure/bip39` | `crypto.getRandomValues` | `@noble/hashes/utils → randomBytes()` |
 | `@scure/bip32` | **none** — only HMAC-SHA512 (deterministic KDF) | — |
 
-**Verified in bundle (Node v24.15.0 + npm 11.13.0):**
+**Verified in bundle (Node v24.18.0 + npm 11.16.0):**
 - `getRandomValues` — **3 occurrences** in bundle. The count is tied to the exact Node + npm versions used during bundling; builds on other versions may differ by 1 occurrence. What matters is that the count is **> 0** and `Math.random` is **absent**.
 - `Math.random` — absent (0 occurrences)
 - `node:crypto` / `require('crypto')` — absent (0 occurrences)
@@ -73,7 +73,8 @@ Install one package at a time for reliability:
 ```bash
 npm install --save-exact @scure/bip39@2.2.0
 npm install --save-exact @scure/bip32@2.2.0
-npm install --save-exact esbuild@0.28.0
+npm install --save-exact esbuild@0.28.1
+npm approve-scripts esbuild
 ```
 
 ### What each package does
@@ -82,7 +83,7 @@ npm install --save-exact esbuild@0.28.0
 |---------|---------|---------|------------|
 | @scure/bip39 | 2.2.0 | BIP39 mnemonic generation/validation, entropy↔mnemonic conversion | github.com/paulmillr/scure-bip39 |
 | @scure/bip32 | 2.2.0 | BIP32 HD key derivation — pure JS, Cure53 audited, Paul Miller | github.com/paulmillr/scure-bip32 |
-| esbuild | 0.28.0 | Bundler: ESM+CJS → single browser file | github.com/evanw/esbuild |
+| esbuild | 0.28.1 | Bundler: ESM+CJS → single browser file | github.com/evanw/esbuild |
 
 ### Expected integrity hashes (sha512, npm registry)
 
@@ -93,8 +94,8 @@ npm install --save-exact esbuild@0.28.0
 @scure/bip32@2.2.0
   sha512-zFr7t2F+a9+5tB7QbarF2HQNYrgjCNaoLAupZdKkrFMYMozJf5zqH2WJCQibMzm1qQ0QogrxVGO3qXfQDYMaQg==
 
-esbuild@0.28.0
-  sha512-sNR9MHpXSUV/XB4zmsFKN+QgVG82Cc7+/aaxJ8Adi8hyOac+EXptIp45QBPaVyX3N70664wRbTcLTOemCAnyqw==
+esbuild@0.28.1
+  sha512-HrJrvZv5ayxBzPfwphOoNzkzOIIlifzk0KJrGK2c8R4+LKpMtpYLQeUdjnwjWv/LZlkH2laZk+4w78pi99D4Vw==
 ```
 
 ### Automated integrity check
@@ -109,7 +110,7 @@ const lock = JSON.parse(fs.readFileSync('package-lock.json', 'utf8'))
 const expected = {
   '@scure/bip39': 'sha512-T/Bj/YvYMNkIPq6EENO6/rcs2e7qTNuyoUXf0KBFDmp0ZDu0H2X4Lq6yC3i0c8PcWkov5EbW+yQZZbdMmk154A==',
   '@scure/bip32': 'sha512-zFr7t2F+a9+5tB7QbarF2HQNYrgjCNaoLAupZdKkrFMYMozJf5zqH2WJCQibMzm1qQ0QogrxVGO3qXfQDYMaQg==',
-  'esbuild':      'sha512-sNR9MHpXSUV/XB4zmsFKN+QgVG82Cc7+/aaxJ8Adi8hyOac+EXptIp45QBPaVyX3N70664wRbTcLTOemCAnyqw==',
+  'esbuild':      'sha512-HrJrvZv5ayxBzPfwphOoNzkzOIIlifzk0KJrGK2c8R4+LKpMtpYLQeUdjnwjWv/LZlkH2laZk+4w78pi99D4Vw==',
 }
 let ok = true
 for (const [pkg, hash] of Object.entries(expected)) {
@@ -135,7 +136,7 @@ Expected output:
 ```
 OK: @scure/bip39@2.2.0
 OK: @scure/bip32@2.2.0
-OK: esbuild@0.28.0
+OK: esbuild@0.28.1
 
 ✅ All integrity hashes match
 ```
@@ -235,7 +236,7 @@ No ES5 transpilation — BigInt, arrow functions, and classes are native.
 Expected output:
 
 ```
-  bip39-bundle.min.js  68.8kb
+  bip39-bundle.min.js  68.9kb
 
 ⚡ Done in ~10–50ms
 ```
@@ -537,9 +538,8 @@ All 34 checks must show `✅` and the final line `ALL TESTS PASSED`.
 
 ## Step 7 — Compute your hashes and deploy
 
-Bundle hashes depend on the build environment (Node + npm version). There is no
-canonical hash — compute yours after building and record it as the reference for
-future rebuilds on the same machine.
+The SRI hash in Step 7 was produced on **npm 11.16.0** (pinned). Bundle output
+depends on npm major version.
 
 ```bash
 # Size:
@@ -549,10 +549,10 @@ wc -c bip39-bundle.min.js
 echo "sha512-$(openssl dgst -sha512 -binary bip39-bundle.min.js | openssl base64 -A)"
 ```
 
-**Verified hashes (Node v24.15.0 + npm 11.13.0):**
+**Verified hashes (Node v24.18.0 + npm 11.16.0 ):**
 ```
-70482 bip39-bundle.min.js
-sha512-lf8u51hdguRIFwjMOeQl4ux4IgedzdqTM3UjiXtgYnv8a4xiI1TpEZXAyN/RQLY7VsAQV+ycHQs+jvvAyRbScA==
+70568 bip39-bundle.min.js
+sha512-i2pi7Z8Yn74bqwauRXH8P5ypupvjOditKi/Jk6cZW3MErTN2gmHUy9c9Oirv+WW/EfWI3PsAOzGxGSyGf/dmgg==
 ```
 
 ---

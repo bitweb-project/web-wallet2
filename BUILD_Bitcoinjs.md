@@ -25,11 +25,11 @@ file, so the bundle is built from source).
 
 | Tool     | Minimum version                     | Verified build   | Check            |
 |----------|-------------------------------------|------------------|------------------|
-| Node.js  | **≥ 20.0.0** (ecpair requires ≥ 20) | v24.15.0         | `node --version` |
-| npm      | **≥ 10**                            | 11.13.0          | `npm --version`  |
+| Node.js  | **≥ 20.0.0** (ecpair requires ≥ 20) | v24.18.0         | `node --version` |
+| npm      | **= 11.16.0** (pinned)              | 11.16.0          | `npm --version`  |
 | Internet | registry.npmjs.org                  | —                | —                |
 
-The SRI hash in Step 7 was produced on **Node v24.15.0 + npm 11.13.0**. Any environment satisfying the minimum versions will produce a functionally equivalent bundle.
+The SRI hash in Step 7 was produced on **Node v24.18.0 + npm 11.16.0**. Any environment satisfying the minimum versions will produce a functionally equivalent bundle.
 
 ---
 
@@ -40,7 +40,7 @@ The SRI hash in Step 7 was produced on **Node v24.15.0 + npm 11.13.0**. Any envi
 | `ecpair → makeRandom()` | `crypto.getRandomValues` | `globalThis.crypto` |
 | `@noble/hashes` (dep of @noble/curves) | `crypto.getRandomValues` | `globalThis.crypto.getRandomValues` |
 
-**Verified in bundle (Node v24.15.0 + npm 11.13.0):**
+**Verified in bundle (Node v24.18.0 + npm 11.16.0):**
 - `getRandomValues` — **7 occurrences** in bundle. The count is tied to the exact Node + npm versions used during bundling; builds on other versions may differ by 1–2 occurrences. What matters is that the count is **> 0** and `Math.random` is **absent**.
 - `Math.random` — absent (0 occurrences)
 - `node:crypto` / `require('crypto')` — absent (0 occurrences)
@@ -74,7 +74,8 @@ Install one package at a time for reliability:
 npm install --save-exact bitcoinjs-lib@7.0.1
 npm install --save-exact ecpair@3.0.1
 npm install --save-exact @noble/curves@2.2.0
-npm install --save-exact esbuild@0.28.0
+npm install --save-exact esbuild@0.28.1
+npm approve-scripts esbuild
 npm install --save-exact buffer@6.0.3
 ```
 
@@ -85,7 +86,7 @@ npm install --save-exact buffer@6.0.3
 | bitcoinjs-lib | 7.0.1 | Core: Psbt, payments, opcodes, address | github.com/bitcoinjs/bitcoinjs-lib |
 | ecpair | 3.0.1 | Key management (split from bitcoinjs-lib in v6+) | github.com/bitcoinjs/ecpair |
 | @noble/curves | 2.2.0 | secp256k1 curve — pure JS, Cure53 audited, Paul Miller | github.com/paulmillr/noble-curves |
-| esbuild | 0.28.0 | Bundler: ESM+CJS → single browser file | github.com/evanw/esbuild |
+| esbuild | 0.28.1 | Bundler: ESM+CJS → single browser file | github.com/evanw/esbuild |
 | buffer | 6.0.3 | Browser polyfill for Node.js Buffer | github.com/feross/buffer |
 
 ### Expected integrity hashes (sha512, npm registry)
@@ -103,8 +104,8 @@ ecpair@3.0.1
 buffer@6.0.3
   sha512-FTiCpNxtwiZZHEZbcbTIcZjERVICn9yq/pDFkTl95/AxzD1naBctN7YO68riM/gLSDY7sdrMby8hofADYuuqOA==
 
-esbuild@0.28.0
-  sha512-sNR9MHpXSUV/XB4zmsFKN+QgVG82Cc7+/aaxJ8Adi8hyOac+EXptIp45QBPaVyX3N70664wRbTcLTOemCAnyqw==
+esbuild@0.28.1
+  sha512-HrJrvZv5ayxBzPfwphOoNzkzOIIlifzk0KJrGK2c8R4+LKpMtpYLQeUdjnwjWv/LZlkH2laZk+4w78pi99D4Vw==
 ```
 
 ### Automated integrity check
@@ -121,7 +122,7 @@ const expected = {
   'ecpair':         'sha512-uz8wMFvtdr58TLrXnAesBsoMEyY8UudLOfApcyg40XfZjP+gt1xO4cuZSIkZ8hTMTQ8+ETgt7xSIV4eM7M6VNw==',
   '@noble/curves':  'sha512-T/BoHgFXirb0ENSPBquzX0rcjXeM6Lo892a2jlYJkqk83LqZx0l1Of7DzlKJ6jkpvMrkHSnAcgb5JegL8SeIkQ==',
   'buffer':         'sha512-FTiCpNxtwiZZHEZbcbTIcZjERVICn9yq/pDFkTl95/AxzD1naBctN7YO68riM/gLSDY7sdrMby8hofADYuuqOA==',
-  'esbuild':        'sha512-sNR9MHpXSUV/XB4zmsFKN+QgVG82Cc7+/aaxJ8Adi8hyOac+EXptIp45QBPaVyX3N70664wRbTcLTOemCAnyqw==',
+  'esbuild':        'sha512-HrJrvZv5ayxBzPfwphOoNzkzOIIlifzk0KJrGK2c8R4+LKpMtpYLQeUdjnwjWv/LZlkH2laZk+4w78pi99D4Vw==',
 }
 let ok = true
 for (const [pkg, hash] of Object.entries(expected)) {
@@ -149,7 +150,7 @@ OK: bitcoinjs-lib@7.0.1
 OK: ecpair@3.0.1
 OK: @noble/curves@2.2.0
 OK: buffer@6.0.3
-OK: esbuild@0.28.0
+OK: esbuild@0.28.1
 
 ✅ All integrity hashes match
 ```
@@ -400,9 +401,9 @@ No ES5 transpilation — BigInt, arrow functions, and classes are native.
 Expected output:
 
 ```
-  bitcoin-bundle-v7.min.js  382.1kb
+  bitcoin-bundle-v7.min.js  382.2kb
 
-⚡ Done in ~100–150ms
+⚡ Done in ~25–150ms
 ```
 
 ---
@@ -410,8 +411,7 @@ Expected output:
 ## Step 5 — Verify RNG in bundle (security audit)
 
 ```bash
-# getRandomValues must be present (> 0). Verified count: 7 on Node v24.15.0 + npm 11.13.0.
-# Builds on other Node/npm versions may differ by 1–2; any positive count is acceptable.
+# getRandomValues must be present (> 0). Verified count: 7 on Node v24.18.0 + npm 11.16.0.
 grep -o "getRandomValues" bitcoin-bundle-v7.min.js | wc -l
 
 # Math.random must be ABSENT:
@@ -426,11 +426,11 @@ if grep -q "bitcoinerlab" bitcoin-bundle-v7.min.js; then echo "❌ PROBLEM: bitc
 # Confirm all getRandomValues calls go through globalThis.crypto:
 grep -oE '.{50}getRandomValues.{50}' bitcoin-bundle-v7.min.js
 
-;function tE(e=32){if(_i.crypto&&typeof _i.crypto.getRandomValues=="function")return _i.crypto.getRandomValues(new
-_i.crypto.randomBytes(e));throw new Error("crypto.getRandomValues must be defined")}});var Ic=k(pt=>{"use strict";O
-(Pa,u),u===void 0&&(u={});let c=u.rng||(a=>crypto.getRandomValues(new Uint8Array(a))),f;do f=c(32),We.parse(Ua.Buff
+;function tE(e=32){if(vi.crypto&&typeof vi.crypto.getRandomValues=="function")return vi.crypto.getRandomValues(new
+vi.crypto.randomBytes(e));throw new Error("crypto.getRandomValues must be defined")}});var Tc=k(pt=>{"use strict";O
+(ka,u),u===void 0&&(u={});let c=u.rng||(a=>crypto.getRandomValues(new Uint8Array(a))),f;do f=c(32),We.parse(Ha.Buff
 his=="object"?globalThis.crypto:null;if(typeof t?.getRandomValues!="function")throw new Error("crypto.getRandomValu
-tesLength" expected <= 65536, got ${e}`);return t.getRandomValues(new Uint8Array(e))}var Aw,K3,$r,Ow,Sn=ht(()=>{Aw=
+tesLength" expected <= 65536, got ${e}`);return t.getRandomValues(new Uint8Array(e))}var Aw,G3,$r,Ow,Sn=ht(()=>{Aw=
 ```
 
 Expected output:
@@ -1167,9 +1167,8 @@ TOTAL: 45  ✅ PASSED: 45  ❌ FAILED: 0
 
 ## Step 7 — Compute your hashes and deploy
 
-Bundle hashes depend on the build environment (Node + npm version). There is no
-canonical hash — compute yours after building and record it as the reference for
-future rebuilds on the same machine.
+The SRI hash in Step 7 was produced on **npm 11.16.0** (pinned). Bundle output
+depends on npm major version.
 
 ```bash
 # Size:
@@ -1179,13 +1178,11 @@ wc -c bitcoin-bundle-v7.min.js
 echo "sha512-$(cat bitcoin-bundle-v7.min.js | openssl dgst -sha512 -binary | openssl base64 -A)"
 ```
 
-**Verified hashes (Node v22.22.2 + npm 10.9.7):**
+**Verified hashes (Node v24.18.0 + npm 11.16.0):**
 ```
-391238 bitcoin-bundle-v7.min.js
-sha512-4a6IrbcPk7PuGATPEqbn+9k1Ne+t2qPtDm/WlySgCPTsgLGzXtsRxSHdstgNQRXp6PCO+pgHhGDaiNt3fDQ20Q==
+391414 bitcoin-bundle-v7.min.js
+sha512-XssJSp+MURkMjDJzNx/pZfoL5OTL3RiGNZTxpoGC3a5G3+rPipy0OSEAdjZ3YzNxeXtlukxo7U1BC1o7WHW7EQ==
 ```
-
-> **Note:** The previous hash (Node v24.15.0 + npm 11.13.0) was `sha512-QNm17tWRH67IgJ34qVgy/xNTh80ud6Rskb9/TshHJmBdbsR6JvTbWsLX1002EUescanS22JQPdxFe9INv8A/vA==` (390614 bytes, without `bitcoin.taproot`). The new hash above includes the `bitcoin.taproot` module (+624 bytes).
 
 ---
 
