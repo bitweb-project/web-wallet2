@@ -1,10 +1,10 @@
 # Bitweb Web Wallet
 
-A clean, self-contained browser wallet with a robust [ApiServer](https://github.com/bitweb-project/api-server) backend.
+A clean, self-contained browser wallet with a robust [ApiServer](https://github.com/bitweb-project/webwallet-api-server) backend.
 
 Feel free to modify and use it in your own projects.
 
-**Live example:** [https://webwallet.bitwebcore.net](https://webwallet.bitwebcore.net)
+**Live example:** [https://webwallet2.bitwebcore.net](https://webwallet2.bitwebcore.net)
 
 ---
 
