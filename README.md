@@ -14,10 +14,10 @@ Feel free to modify and use it in your own projects.
 
 | Type | Format | Standard |
 |------|--------|----------|
-| Legacy | `1...` | P2PKH |
-| Segwit (wrapped) | `3...` | P2SH-P2WPKH |
-| Native SegWit | `btw1q...` | P2WPKH (Bech32) |
-| Taproot | `btw1p...` | P2TR (Bech32m) |
+| Legacy | `E...` | P2PKH |
+| Segwit (wrapped) | `D...` | P2SH-P2WPKH |
+| Native SegWit | `web1q...` | P2WPKH (Bech32) |
+| Taproot | `web1p...` | P2TR (Bech32m) |
 
 All four types are available in Settings. HD derivation follows BIP44/49/84/86 per type.
 
